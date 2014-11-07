@@ -1,0 +1,17 @@
+Abstract
+In this report, we want to present some approaches to a common problem: color classification using what we have learned so far in class. There has been a vast different set of solutions to this problem, from the simple k-nearest neighbors to machine learning SVM. Under different scenario, some of this might works well and some might not due to the problem’s constraint. Here, our problem’s objective is to be able to classify color of the buoys on the water surface at different time of the day, under different weather and lightning conditions. This report will involve around  some common algorithms from non-learning algorithm like majority-color-voting to learning algorithm such as Naive Bayes and multiclass SVM, trying to understand how they works and be able to understand the appropriateness of each algorithm’s application to this problem. 
+
++ Related work:
+Majority vote:
+For this algorithm, we iterate over the feature vector (after compressing histogram into a stored in 64*64*64 size 1D array), pick the index with the highest count. Then we reverse the histogram transforming method to get the RGB value and this would be our most popular color. We then compare the Euclidian distance between this RGB and other RGB of our 6 colors and pick the color from our set which yields the smallest distance. 
+The result was not as high as we expect, as a lot of non-black buoys were classified as black because of the shadow and water surface included in the picture popularize the count of black color in our feature vector.
+In our 130-size test data, we get the average accuracy of ~21%.
+
+Average vote:
+In this implementation, we simply iterate all the RGB value, find the total weighted sum with the weight for an RGB triplet would be the count of the RGB in our feature vector. We then find the average RGB value by dividing the total counts in our feature vector. Then we take this mean value to compare to our set of colors and pick the color which has the minimum Euclidean distance to the mean. 
+The result was a lot better than majority vote, but also not very good. This again can be caused by the mixture of color in our picture boxes.
+In our 130-size test data, we get the average accuracy of ~48%
+
+
+Further improvement
+In our next revision of this report, we hope to be able to understand why some of our high accuracy algorithms like SVM and Naive Bayes perform well in our collected data for this problem. We hope that with the induced conclusion we can have a general statement on how these algorithms would perform in a large training size (i.e would they improve and what rate of improvement they would have).
