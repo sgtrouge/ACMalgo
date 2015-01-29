@@ -4,7 +4,7 @@
 #include <string>
 #include <algorithm>
 #include <vector>
-
+#include <istream>
 using namespace std;
 bool comp(const int&a, const int &b)
 {
@@ -18,16 +18,14 @@ string tmp()
 vector <int> a;
 int main()
 {
-	int zz = 2;
-	int zs = 3;
-	stringstream tmp;
-	tmp << "ZSDS JSKLDJS KLJ DSDS";
-	string tmpz;
-	string gets;
-	while (tmp >> gets)
+	int z1 = 2;
+	int z2 = 3;
+	string tmp;
+	while (getline(cin,tmp))
 	{
-		tmpz = tmpz + gets;
-	} 
-	cout << tmpz << endl;
-	for (int i = 0; i < 100; i++) a.push_back(100-i);
+		stringstream st;
+		st << tmp;
+		st >> z1 >> z2;
+		cout << z1 << " " << z2 << endl;
+	}
 }
