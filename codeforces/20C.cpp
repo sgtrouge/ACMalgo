@@ -1,75 +1,67 @@
 #include <iostream>
-#include <cstdio>
-#include <algorithm>
+#include "math.h"
+#include <utility>
 #include <queue>
+#include "assert.h"
 using namespace std;
-vector < pair<int, long long> > adj[100005];
-struct t
-{
-    long long g;
-    int u;
-    int v;
-};
-struct comp
-{
-    bool operator()(t& t1, t& t2)
-    {
-        return t1.g > t2.g;
+
+typedef pair<int, pair<int,int> > pp;
+int n,m;
+vector<pair<int, int> > adj[100001];  
+// first = value, second.first = node cur, second.second = node last
+int trace[100001];
+
+struct comp {
+    bool operator()(pp &a, pp &b) {
+        return a.first > b.first;
     }
 };
-priority_queue <t, vector<t>, comp > heap;
-int trace[100005];
-int pass[100005];
-int n,m;
 
-void dijkstra()
-{
-    t init; init.g = 0; init.u = 1; init.v = 0;
-    heap.push(init);
-    while (heap.size() != 0)
-    {
-        t top = heap.top();
-        heap.pop();
-        int g = top.g;
-        int u = top.u;
-        if (pass[u] == 1) continue;
-        pass[u] = 1;
-        trace[u] = top.v;
-        if (u == n) break;
-        for (int j = 0; j < adj[u].size(); j++)
-        {
-            int v = adj[u][j].first;
-            t tmp;
-            tmp.g = g+adj[u][j].second;
-            tmp.u = v;
-            tmp.v = u;
-            heap.push(tmp);
+priority_queue<pp, vector<pp>, comp > q;
+
+void dij() {
+    pp init;                init.first = 0;     
+    init.second.first = 1;  init.second.second = 1;
+    q.push(init);
+    while (q.size() > 0) {
+        pp top = q.top();
+        q.pop();
+        if (trace[top.second.first]) continue;
+        trace[top.second.first] = top.second.second;
+        if (top.second.first == n) break;
+        for (int i = 0; i < adj[top.second.first].size(); i++) {
+            int tmp = top.first + adj[top.second.first][i].first;
+            q.push(
+                make_pair(tmp, 
+                          make_pair(
+                            adj[top.second.first][i].second, 
+                            top.second.first
+                          )
+                )
+            );
         }
     }
 }
-
-void find(int u)
-{
-    if (u == 0) return;
-    find(trace[u]);
-    cout << u << " ";
+void recur(int t) {
+    if (t == 1) {
+        cout << 1 << " ";
+        return;
+    }
+    recur(trace[t]);
+    cout << t << " ";
 }
-int main()
-{
+
+int main() {
     cin >> n >> m;
-    for (int i = 0; i < m; i++)
-    {   
-        int u, v;    long long g;
+    for (int i = 0; i < m; i++) {
+        int u, v, g;
         cin >> u >> v >> g;
-        adj[u].push_back(make_pair(v,g));
-        adj[v].push_back(make_pair(u,g));
+        adj[u].push_back(make_pair(g,v));
+        adj[v].push_back(make_pair(g,u));
     }
-    dijkstra();
-    if (trace[n] == 0) 
-    {
-        cout << -1 << endl;
-        return 0;
-    }
-    find(n);
+    dij();
+    if (trace[n] == 0) cout << -1;
+    else               recur(n);
     cout << endl;
+    return 0;
 }
