@@ -38,13 +38,13 @@ int main() {
 			if (r + k/2 -1 >  n) continue;
 			if (l - k/2 +1 <= 0) continue;
 		}
-//		cout << l << " " << r << endl;
-//		cout << "INSIDE" << endl;
+		cout << l << " " << r << endl;
+		cout << "INSIDE" << endl;
 		for (int j = 1; j <= k/2; j++) {
 			int p1 = root(l);
 			int p2 = root(r);
-//			cout << l << " with root " << p1 << endl;
-//			cout << r << " with root " << p2 << endl;
+			cout << l << " with root " << p1 << endl;
+			cout << r << " with root " << p2 << endl;
 			if (p1 != p2)  {
 				unite(p1,p2);
 				num--;
@@ -57,6 +57,7 @@ int main() {
 	for (int i = 1; i <= num; i++) {
 		res = (res * m) % MODU;
 	}
+	cout << num << endl;
 	cout << res << endl;
 	return 0;
 }
